@@ -4,53 +4,54 @@ import java.util.List;
 
 public class IrisClassifyModel implements IModel{
 
-    List<Float> w;
+    List<Double> w;
 
-    List<Float> grad;
+    List<Double> grad;
 
-    float learningRate = 0.1f;
+    float learningRate = 0.001f;
 
     float iteration = 1000;
 
 
     @Override
-    public void train(List<List<Float>> train_data, List<Float> train_label) {
+    public void train(List<List<Double>> train_data, List<Double> train_label) {
 
         int n_samples = train_data.size();
         int dim = train_data.get(0).size();
-        List<Float> deltaW = new ArrayList<Float>(Collections.nCopies(dim, 0f));
+        List<Double> deltaW = new ArrayList<Double>(Collections.nCopies(dim, 0d));
+        w = new ArrayList<Double>(Collections.nCopies(dim, 0d));
         grad = new ArrayList<>(dim);
         float loss;
-        List<Float> value;
+        List<Double> value;
         // 遇到终止条件之前，做以下操作
         for (int i = 0; i < iteration; i++) {
             // 初始化每个Δwi为0
-            w = new ArrayList<Float>(Collections.nCopies(dim, 0f));
+            deltaW = new ArrayList<Double>(Collections.nCopies(dim, 0d));
             value = matrix_vector_multiply(train_data, w);
             // wx
-            for (int j = 0; j < deltaW.size(); j++) {
-                for (int inside = 0; inside < value.size(); inside++){
-                    deltaW.set(j, deltaW.get(j) + learningRate*(train_label.get(inside) - value.get(inside)));
+            for (int j = 0; j < dim; j++) {
+                for (int sampleIndex = 0; sampleIndex < n_samples; sampleIndex++){
+                    deltaW.set(j, deltaW.get(j) + learningRate*(train_label.get(sampleIndex) - value.get(sampleIndex))*train_data.get(sampleIndex).get(j));
                 }
                 // wj←wj+Δwj
                 w.set(j, w.get(j) + deltaW.get(j));
             }
             loss = rmseLoss(value, train_label);
-            if(i % 100 == 0) System.out.println("iter = " + i + ", RMSE loss = " + loss);
+            System.out.println("iter = " + i + ", RMSE loss = " + loss);
         }
 
     }
 
     @Override
-    public void predict(List<List<Float>> test_data) {
+    public void predict(List<List<Double>> test_data) {
 
     }
 
     // calculate w.dot(x)
-    private List<Float> matrix_vector_multiply(List<List<Float>> matrix, List<Float> vector) {
-        List<Float> result = new ArrayList<>(matrix.size());
-        for (List<Float> row: matrix) {
-            float row_sum = 0;
+    private List<Double> matrix_vector_multiply(List<List<Double>> matrix, List<Double> vector) {
+        List<Double> result = new ArrayList<>(matrix.size());
+        for (List<Double> row: matrix) {
+            double row_sum = 0;
             for (int i = 0; i < row.size(); i ++) {
                 row_sum += row.get(i) * vector.get(i);
             }
@@ -60,13 +61,14 @@ public class IrisClassifyModel implements IModel{
     }
 
     // rmse loss
-    private float rmseLoss(List<Float> value, List<Float> target) {
-        float sum = 0;
+    private float rmseLoss(List<Double> value, List<Double> target) {
+        double sum = 0;
         for (int i = 0; i < value.size(); i ++) {
-            float diff = value.get(i) - target.get(i);
-            float sdiff = diff*diff;
+            double diff = value.get(i) - target.get(i);
+            double sdiff = Math.abs(diff);
             sum += sdiff;
         }
+        System.out.println(sum);
         return (float) Math.sqrt(sum/value.size());
     }
 }

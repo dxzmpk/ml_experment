@@ -9,9 +9,9 @@ import java.util.List;
 
 public class DadaLoader implements IDataLoader{
 
-    private List<List<Float>> train_data;
+    private List<List<Double>> train_data;
 
-    private List<Float> train_labels;
+    private List<Double> train_labels;
 
     @Override
     public boolean loadData(String filepath) {
@@ -20,13 +20,14 @@ public class DadaLoader implements IDataLoader{
         try (BufferedReader br = Files.newBufferedReader(Paths.get(filepath), StandardCharsets.UTF_8)) {
             String line = br.readLine();
             while (line != null) {
-                String[] sample = line.split("\t");
-                List<Float> temp = new ArrayList<>();
+                String[] sample = line.trim().split("\\s+");
+                List<Double> temp = new ArrayList<>();
                 for(int i = 0; i < sample.length-1; i++){
-                    temp.set(i, Float.parseFloat(sample[i]));
+                    temp.add(Double.parseDouble(sample[i]));
                 }
                 train_data.add(temp);
-                train_labels.add(Float.parseFloat(sample[sample.length-1]));
+                train_labels.add(Double.parseDouble(sample[sample.length-1]));
+                line = br.readLine();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -35,11 +36,11 @@ public class DadaLoader implements IDataLoader{
         return true;
     }
     @Override
-    public List<List<Float>> getTrain_data() {
+    public List<List<Double>> getTrain_data() {
         return train_data;
     }
     @Override
-    public List<Float> getTrain_labels() {
+    public List<Double> getTrain_labels() {
         return train_labels;
     }
 }

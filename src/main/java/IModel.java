@@ -2,7 +2,7 @@ import java.util.List;
 
 public interface IModel {
 
-    void train(List<List<Float>> train_data, List<Float> train_label);
+    void train(List<List<Double>> train_data, List<Double> train_label);
 
-    void predict(List<List<Float>> test_data);
+    void predict(List<List<Double>> test_data);
 }
