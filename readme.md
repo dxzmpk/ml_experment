@@ -7,3 +7,14 @@
 iter = 0, RMSE loss = 0.62419385
 
 iter = 1, RMSE loss = 0.4733614
+
+
+#2020 HIT Fall Machine Learning Theory and Method Experiment
+Start Up:\
+The project file already contains the dataset, and only relies on the Java core library, so directly use maven to import the project and run the main method in the Main.java file to complete the training process.
+
+Output example (iter represents the number of training rounds, RMSE loss represents the training error):
+
+iter = 0, RMSE loss = 0.62419385
+
+iter = 1, RMSE loss = 0.4733614
