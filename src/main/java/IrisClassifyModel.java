@@ -10,7 +10,7 @@ public class IrisClassifyModel implements IModel{
 
     float learningRate = 0.001f;
 
-    float iteration = 1000;
+    float iteration = 1000f;
 
 
     @Override
@@ -36,15 +36,19 @@ public class IrisClassifyModel implements IModel{
                 // wj←wj+Δwj
                 w.set(j, w.get(j) + deltaW.get(j));
             }
-            loss = rmseLoss(value, train_label);
-            System.out.println("iter = " + i + ", RMSE loss = " + loss);
+            if (i%100 == 0 || i <= 100) {
+                loss = rmseLoss(value, train_label);
+                System.out.println("iter = " + i + ", RMSE loss = " + loss);
+            }
         }
 
     }
 
     @Override
-    public void predict(List<List<Double>> test_data) {
-
+    public List<Double> predict(List<List<Double>> test_data) {
+        List<Double> value;
+        value = matrix_vector_multiply(test_data, w);
+        return value;
     }
 
     // calculate w.dot(x)
@@ -68,7 +72,6 @@ public class IrisClassifyModel implements IModel{
             double sdiff = Math.abs(diff);
             sum += sdiff;
         }
-        System.out.println(sum);
         return (float) Math.sqrt(sum/value.size());
     }
 }

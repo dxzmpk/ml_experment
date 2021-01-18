@@ -20,7 +20,7 @@ public class DadaLoader implements IDataLoader{
         try (BufferedReader br = Files.newBufferedReader(Paths.get(filepath), StandardCharsets.UTF_8)) {
             String line = br.readLine();
             while (line != null) {
-                String[] sample = line.trim().split("\\s+");
+                String[] sample = line.trim().split(",");
                 List<Double> temp = new ArrayList<>();
                 for(int i = 0; i < sample.length-1; i++){
                     temp.add(Double.parseDouble(sample[i]));
