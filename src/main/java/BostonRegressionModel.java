@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class IrisClassifyModel implements IModel{
+public class BostonRegressionModel implements IModel{
 
     List<Double> w;
 
