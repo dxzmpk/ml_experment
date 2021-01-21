@@ -23,6 +23,9 @@ public class BostonRegressionModel implements IModel{
         grad = new ArrayList<>(dim);
         float loss;
         List<Double> value;
+        int EarlyStopingThresold = 10;
+        int EarlyStopingCount = 0;
+        float leastLoss = Float.MAX_VALUE;
         // 遇到终止条件之前，做以下操作
         for (int i = 0; i < iteration; i++) {
             // 初始化每个Δwi为0
@@ -36,8 +39,21 @@ public class BostonRegressionModel implements IModel{
                 // wj←wj+Δwj
                 w.set(j, w.get(j) + deltaW.get(j));
             }
+            loss = rmseLoss(value, train_label);
+
+            if (loss < leastLoss - 1e-3) {
+                EarlyStopingCount = 0;
+                leastLoss = loss;
+            } else {
+                EarlyStopingCount += 1;
+                if (EarlyStopingCount == EarlyStopingThresold) {
+                    System.out.println("Early Stopping At Iteration = " + i);
+                    System.out.println("Final Loss = " + loss);
+                    break;
+                }
+            }
+
             if (i%100 == 0 || i <= 100) {
-                loss = rmseLoss(value, train_label);
                 System.out.println("iter = " + i + ", RMSE loss = " + loss);
             }
         }
