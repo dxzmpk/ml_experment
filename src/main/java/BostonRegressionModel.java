@@ -6,7 +6,7 @@ public class BostonRegressionModel implements IModel{
 
     List<Double> w;
 
-    List<Double> grad;
+
 
     float learningRate = 0.001f;
 
@@ -20,7 +20,6 @@ public class BostonRegressionModel implements IModel{
         int dim = train_data.get(0).size();
         List<Double> deltaW = new ArrayList<Double>(Collections.nCopies(dim, 0d));
         w = new ArrayList<Double>(Collections.nCopies(dim, 0d));
-        grad = new ArrayList<>(dim);
         float loss;
         List<Double> value;
         int EarlyStopingThresold = 10;
