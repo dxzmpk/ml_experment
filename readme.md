@@ -79,16 +79,4 @@ deltaW为和数据维数一样的列表，用来保存每次更新w的变化幅�
 ## 附录
 
 ### 预处理代码
-
-import pandas as pd
-from sklearn import preprocessing
-
-// 读入数据， 转换类型
-df = pd.read_csv(r"D:\archive\housing.csv", header = None)
-values = []
-for i in df.values:
-values.append([float(c) for c in i[ 0 ].strip().split()])
-// min_max规范化
-min_max_scaler = preprocessing.MinMaxScaler()
-x_scaled = min_max_scaler.fit_transform(values)
-df = pd.DataFrame(x_scaled)
+![image](https://user-images.githubusercontent.com/34058412/123221500-98ca2400-d501-11eb-8356-e6c7e7105d50.png)
